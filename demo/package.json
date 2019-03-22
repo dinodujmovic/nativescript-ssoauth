@@ -14,7 +14,9 @@
 	},
 	"dependencies": {
 		"nativescript-ssoauth": "file:../src",
-		"tns-core-modules": "^4.1.0"
+		"rxjs": "^6.4.0",
+		"tns-core-modules": "^5.1.2",
+		"tns-platform-declarations": "^5.2.2"
 	},
 	"devDependencies": {
 		"babel-traverse": "6.15.0",

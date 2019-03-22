@@ -37,7 +37,7 @@ An advanced webview using <a href="https://developer.chrome.com/multidevice/andr
 
 [Android Comparison](https://developer.chrome.com/multidevice/images/customtab/performance.gif)
 
-### Demo
+### DemowhateverYouLike
 
 | Android                                   | iOS                                             |
 | ----------------------------------------- | ----------------------------------------------- |
@@ -58,14 +58,14 @@ tns plugin add nativescript-advanced-webview
 Initiate the service before the app starts e.g app.ts, main.ts
 
 ```typescript
-import { init } from 'nativescript-advanced-webview';
+import { init } from 'nativescript-ssoauth';
 init();
 ```
 
 ```typescript
-import { openAdvancedUrl, SSOAuthOptions } from 'nativescript-advanced-webview';
-    //// or
-import * as AdvancedWebView from 'nativescript-advanced-webview'
+import { openAdvancedUrl, SSOAuthOptions } from 'nativescript-ssoauth';
+//// or
+import * as AdvancedWebView from 'nativescript-ssoauth';
 
 public whateverYouLike() {
 
@@ -73,7 +73,14 @@ public whateverYouLike() {
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         toolbarColor: '#ff4081',
         toolbarControlsColor: '#333', // iOS only
-        showTitle: false // Android only
+        showTitle: false, // Android only
+        callbackURLScheme: 'com.demoapp://',
+        onClose: closed => {
+            console.log(`Manually closed: ${closed}`);
+        },
+        successCompletionHandler: url => {
+            console.log(`Successful URL return: ${url}`);
+        }
     };
 
     openAdvancedUrl(opts);
@@ -98,7 +105,14 @@ exports.openChromTabs = function(args){
             url: args.view.bindingContext.url,
             toolbarColor: '#ff4081',
             toolbarControlsColor: '#333', // iOS only
-            showTitle: false // Android only
+            showTitle: false, // Android only
+            callbackURLScheme: 'com.demoapp://',
+            onClose: closed => {
+                    console.log(`Manually closed: ${closed}`);
+                },
+                successCompletionHandler: url => {
+                    console.log(`Successful URL return: ${url}`);
+                }
     };
    console.log(args.view.bindingContext.url);
 
@@ -115,10 +129,14 @@ exports.openChromTabs = function(args){
 - toolbarColor: string
 - toolbarControlsColor: string - ** iOS only **
 - showTitle: boolean - ** Android only **
-- isClosed: Function
+- callbackURLScheme: string
+- isLogout: boolean
+- onClose: Function
+- successCompletionHandler: Function
 
 ##### Demo App
 
 - fork the repo
+- cd into `web` directory (recommend: use [http-server](https://www.npmjs.com/package/http-server) to server web files on port 8080)
 - cd into the `src` directory
 - execute `npm run demo.android` or `npm run demo.ios` (these cmds are in the package.json `scripts` section of the src if you're curious what is executing)

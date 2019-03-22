@@ -19,13 +19,16 @@ export class HelloWorldModel extends Observable {
 	public onTap() {
 		try {
 			let opt: SSOAuthOptions = {
-				url: 'https://bradmartin.net',
+				url: 'http://127.0.0.1:8080/',
 				showTitle: true,
 				toolbarColor: '#336699',
 				toolbarControlsColor: '#333',
 				callbackURLScheme: 'com.demoapp://',
-				manualCloseHandler: closed => {
-					console.log(closed);
+				onClose: closed => {
+					console.log(`Manually closed: ${closed}`);
+				},
+				successCompletionHandler: url => {
+					console.log(`Successful URL return: ${url}`);
 				}
 			};
 

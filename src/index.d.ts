@@ -38,7 +38,7 @@ export interface SSOAuthOptions {
 	/**
 	 * Callback for when the webview is closed
 	 */
-	manualCloseHandler?: Function;
+	onClose?: Function;
 
 	/**
 	 * Callback for when the webview is logged/redirected

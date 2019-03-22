@@ -22,8 +22,8 @@ export function openAdvancedUrl(options: SSOAuthOptions): void {
 		const resultCode = args.resultCode;
 		if (requestCode === REQUEST_CODE) {
 			if (resultCode === android.app.Activity.RESULT_CANCELED) {
-				if (options.manualCloseHandler && typeof options.manualCloseHandler === 'function') {
-					options.manualCloseHandler(true);
+				if (options.onClose && typeof options.onClose === 'function') {
+					options.onClose(true);
 				}
 				app.android.off(app.AndroidApplication.activityResultEvent);
 			}
@@ -38,8 +38,8 @@ export function openAdvancedUrl(options: SSOAuthOptions): void {
 		onNavigationEvent: function(navigationEvent: number, extras: android.os.Bundle) {
 			switch (navigationEvent) {
 				case 6:
-					if (options.manualCloseHandler && typeof options.manualCloseHandler === 'function') {
-						options.manualCloseHandler(true);
+					if (options.onClose && typeof options.onClose === 'function') {
+						options.onClose(true);
 					}
 					break;
 			}
@@ -69,6 +69,6 @@ export interface SSOAuthOptions {
 	toolbarControlsColor?: string;
 	callbackURLScheme: string;
 	isLogout?: boolean;
-	manualCloseHandler?: Function;
+	onClose?: Function;
 	successCompletionHandler?: Function;
 }
