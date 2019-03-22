@@ -1,8 +1,8 @@
 {
-	"name": "nativescript-advanced-webview",
+	"name": "nativescript-ssoauth",
 	"version": "3.0.1",
 	"description": "An advanced webview using Chrome CustomTabs on Android and SFSafariViewController on iOS.",
-	"main": "advanced-webview",
+	"main": "ssoauth",
 	"typings": "index.d.ts",
 	"nativescript": {
 		"platforms": {
@@ -12,11 +12,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/bradmartin/nativescript-advanced-webview.git"
+		"url": "https://github.com/dinodujmovic/nativescript-ssoauth.git"
 	},
 	"keywords": [
 		"NativeScript",
-		"nativescript-advanced-webview",
+		"nativescript-ssoauth",
 		"Chrome Custom Tabs",
 		"SafariViewController",
 		"Safari",
@@ -55,16 +55,16 @@
 	],
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/bradmartin/nativescript-advanced-webview/issues"
+		"url": "https://github.com/dinodujmovic/nativescript-ssoauth/issues"
 	},
-	"homepage": "https://github.com/bradmartin/-advanced-webview",
+	"homepage": "https://github.com/dinodujmovic/ssoauth",
 	"readmeFilename": "README.md",
 	"scripts": {
 		"debug.ios": "npm run preparedemo && cd demo && tns debug ios --emulator",
 		"debug.android": "npm run preparedemo && cd demo && tns debug android --emulator",
-		"preparedemo": "npm run build && cd demo && tns plugin remove nativescript-advanced-webview && tns plugin add .. && tns install",
+		"preparedemo": "npm run build && cd demo && tns plugin remove nativescript-ssoauth && tns plugin add .. && tns install",
 		"nuke": "rm -rf node_modules && cd demo && rm -rf node_modules && cd ..",
-		"setup": "npm i && cd demo && npm i && cd .. && npm run build && cd demo && tns plugin remove nativescript-advanced-webview; tns plugin add .. && cd ..",
+		"setup": "npm i && cd demo && npm i && cd .. && npm run build && cd demo && tns plugin remove nativescript-ssoauth; tns plugin add .. && cd ..",
 		"start": "npm run demo.android",
 		"precommit": "lint-staged",
 		"tsc": "tsc -skipLibCheck",
@@ -74,12 +74,12 @@
 		"test.android": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
 		"test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
 		"tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
-		"plugin.link": "npm link && cd ../demo && npm link nativescript-advanced-webview && cd ../src",
+		"plugin.link": "npm link && cd ../demo && npm link nativescript-ssoauth && cd ../src",
 		"plugin.tscwatch": "npm run tsc -- -w",
 		"demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios --syncAllFiles",
 		"demo.android": "npm i && npm run tsc && cd ../demo && tns run android --syncAllFiles",
 		"demo.reset": "cd ../demo && rimraf platforms",
-		"plugin.prepare": "npm run build && cd ../demo && tns plugin remove nativescript-advanced-webview && tns plugin add ../src",
+		"plugin.prepare": "npm run build && cd ../demo && tns plugin remove nativescript-ssoauth && tns plugin add ../src",
 		"clean": "cd ../demo && rimraf hooks node_modules platforms && cd ../src && rimraf node_modules && npm run plugin.link",
 		"ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**'",
 		"prepack": "npm run build.native"
