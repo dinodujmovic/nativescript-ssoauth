@@ -63,13 +63,13 @@ init();
 ```
 
 ```typescript
-import { openAdvancedUrl, AdvancedWebViewOptions } from 'nativescript-advanced-webview';
+import { openAdvancedUrl, SSOAuthOptions } from 'nativescript-advanced-webview';
     //// or
 import * as AdvancedWebView from 'nativescript-advanced-webview'
 
 public whateverYouLike() {
 
-    let opts: AdvancedWebViewOptions = {
+    let opts: SSOAuthOptions = {
         url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
         toolbarColor: '#ff4081',
         toolbarControlsColor: '#333', // iOS only
@@ -107,9 +107,9 @@ exports.openChromTabs = function(args){
 
 ### API
 
-- openAdvancedUrl(options: AdvancedWebViewOptions)
+- openAdvancedUrl(options: SSOAuthOptions)
 
-##### AdvancedWebViewOptions Properties
+##### SSOAuthOptions Properties
 
 - url: string
 - toolbarColor: string

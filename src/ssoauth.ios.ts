@@ -33,7 +33,7 @@ class SFSafariViewControllerDelegateImpl extends NSObject implements SFSafariVie
 
 export function init() {}
 
-export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
+export function openAdvancedUrl(options: SSOAuthOptions): void {
 	if (!options.url) {
 		throw new Error('No url set in the Advanced WebView Options object.');
 	}
@@ -48,7 +48,7 @@ export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
 		sfc.preferredControlTintColor = new Color(options.toolbarControlsColor).ios;
 	}
 
-	sfc.delegate = SFSafariViewControllerDelegateImpl.initWithOwnerCallback(new WeakRef({}), options.isClosed);
+	sfc.delegate = SFSafariViewControllerDelegateImpl.initWithOwnerCallback(new WeakRef({}), options.manualCloseHandler);
 
 	let app = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
 
@@ -57,10 +57,13 @@ export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
 	app.keyWindow.rootViewController.presentViewControllerAnimatedCompletion(sfc, animated, completionHandler);
 }
 
-export interface AdvancedWebViewOptions {
+export interface SSOAuthOptions {
 	url: string;
 	showTitle?: boolean;
 	toolbarColor?: string;
 	toolbarControlsColor?: string;
-	isClosed?: Function;
+	callbackURLScheme: string;
+	isLogout?: boolean;
+	manualCloseHandler?: Function;
+	successCompletionHandler?: Function;
 }

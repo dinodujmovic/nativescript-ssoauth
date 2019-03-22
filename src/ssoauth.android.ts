@@ -13,7 +13,7 @@ export function init() {
 	co.fitcom.fancywebview.AdvancedWebView.init(utils.ad.getApplicationContext(), true);
 }
 
-export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
+export function openAdvancedUrl(options: SSOAuthOptions): void {
 	if (!options.url) {
 		throw new Error('No url set in the Advanced WebView Options object.');
 	}
@@ -22,8 +22,8 @@ export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
 		const resultCode = args.resultCode;
 		if (requestCode === REQUEST_CODE) {
 			if (resultCode === android.app.Activity.RESULT_CANCELED) {
-				if (options.isClosed && typeof options.isClosed === 'function') {
-					options.isClosed(true);
+				if (options.manualCloseHandler && typeof options.manualCloseHandler === 'function') {
+					options.manualCloseHandler(true);
 				}
 				app.android.off(app.AndroidApplication.activityResultEvent);
 			}
@@ -38,8 +38,8 @@ export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
 		onNavigationEvent: function(navigationEvent: number, extras: android.os.Bundle) {
 			switch (navigationEvent) {
 				case 6:
-					if (options.isClosed && typeof options.isClosed === 'function') {
-						options.isClosed(true);
+					if (options.manualCloseHandler && typeof options.manualCloseHandler === 'function') {
+						options.manualCloseHandler(true);
 					}
 					break;
 			}
@@ -62,9 +62,13 @@ export function openAdvancedUrl(options: AdvancedWebViewOptions): void {
 	wv.loadUrl(options.url);
 }
 
-export interface AdvancedWebViewOptions {
+export interface SSOAuthOptions {
 	url: string;
-	toolbarColor?: string;
 	showTitle?: boolean;
-	isClosed?: Function;
+	toolbarColor?: string;
+	toolbarControlsColor?: string;
+	callbackURLScheme: string;
+	isLogout?: boolean;
+	manualCloseHandler?: Function;
+	successCompletionHandler?: Function;
 }

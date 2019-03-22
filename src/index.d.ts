@@ -1,13 +1,13 @@
 /**
  * Open the Advanced WebView - Safari on iOS and Chrome on Android.
  * If the browser is not installed on the device, it should fall back to a webview.
- * @param {AdvancedWebViewOptions}
+ * @param {SSOAuthOptions}
  */
-export function openAdvancedUrl(options: AdvancedWebViewOptions): void;
+export function openAdvancedUrl(options: SSOAuthOptions): void;
 
 export function init(): void;
 
-export interface AdvancedWebViewOptions {
+export interface SSOAuthOptions {
 	/**
 	 * The url of the site to open.
 	 */
@@ -27,9 +27,21 @@ export interface AdvancedWebViewOptions {
 	 * The color of the toolbar controls. *** iOS ONLY ***
 	 */
 	toolbarControlsColor?: string;
-
+	/**
+	 * Specified redirection URL
+	 */
+	callbackURLScheme: string;
+	/**
+	 * Is logout URL
+	 */
+	isLogout?: boolean;
 	/**
 	 * Callback for when the webview is closed
 	 */
-	isClosed?: Function;
+	manualCloseHandler?: Function;
+
+	/**
+	 * Callback for when the webview is logged/redirected
+	 */
+	successCompletionHandler?: Function;
 }

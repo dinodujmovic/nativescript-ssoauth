@@ -26,6 +26,19 @@
 	<string>LaunchScreen</string>
 	<key>UIRequiresFullScreen</key>
 	<true/>
+   <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.demoapp</string>
+        </array>
+        <key>CFBundleURLName</key>
+        <string>com.demoapp</string>
+        <key>CFBundleTypeRole</key>
+        <string>Viewer</string>
+      </dict>
+    </array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
