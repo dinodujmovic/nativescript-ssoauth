@@ -1,13 +1,13 @@
 {
 	"name": "nativescript-ssoauth",
-	"version": "3.0.1",
+	"version": "1.0.0",
 	"description": "An advanced webview using Chrome CustomTabs on Android and SFSafariViewController on iOS.",
 	"main": "ssoauth",
 	"typings": "index.d.ts",
 	"nativescript": {
 		"platforms": {
-			"android": "2.0.0",
-			"ios": "2.3.0"
+			"android": "5.0.0",
+			"ios": "5.0.0"
 		}
 	},
 	"repository": {
@@ -27,36 +27,10 @@
 		"Android"
 	],
 	"author": {
-		"name": "Brad Martin",
-		"email": "bradwaynemartin@gmail.com"
+		"name": "Dino Dujmovic",
+		"email": "dino7dujmovic@gmail.com"
 	},
-	"contributors": [
-		{
-			"name": "Eddy Verbruggen",
-			"email": "eddyverbruggen@gmail.com",
-			"url": "https://github.com/eddyverbruggen"
-		},
-		{
-			"name": "Stanimira Vlaeva",
-			"url": "https://github.com/sis0k0"
-		},
-		{
-			"name": "Oluwaseye",
-			"url": "https://github.com/oluwaseye"
-		},
-		{
-			"name": "Jibon Lawrence Costa",
-			"url": "https://github.com/jibon57"
-		},
-		{
-			"name": "Osei Fortune",
-			"url": "https://github.com/triniwiz"
-		}
-	],
 	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/dinodujmovic/nativescript-ssoauth/issues"
-	},
 	"homepage": "https://github.com/dinodujmovic/ssoauth",
 	"readmeFilename": "README.md",
 	"scripts": {

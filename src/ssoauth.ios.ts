@@ -104,7 +104,7 @@ class AuthSFSafariViewController extends SFSafariViewController {
 
 export function init() {}
 
-export function openAdvancedUrl(options: SSOAuthOptions): void {
+export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 	if (!options.url) {
 		throw new Error('No url set in the Advanced WebView Options object.');
 	}

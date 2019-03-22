@@ -13,7 +13,7 @@ export function init() {
 	co.fitcom.fancywebview.AdvancedWebView.init(utils.ad.getApplicationContext(), true);
 }
 
-export function openAdvancedUrl(options: SSOAuthOptions): void {
+export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 	if (!options.url) {
 		throw new Error('No url set in the Advanced WebView Options object.');
 	}

@@ -1,27 +1,10 @@
 <a align="center" href="https://www.npmjs.com/package/nativescript-advanced-webview">
-    <h3 align="center">NativeScript Advanced Webview</h3>
+    <h3 align="center">SSOAuth</h3>
 </a>
 <h4 align="center">
-An advanced webview using <a href="https://developer.chrome.com/multidevice/android/customtabs#whatarethey">Chrome Custom Tabs</a> on Android and <a href="https://developer.apple.com/reference/safariservices/sfsafariviewcontroller?language=objc">SFSafariViewController</a> on iOS.
+Using <a href="https://developer.chrome.com/multidevice/android/customtabs#whatarethey">Chrome Custom Tabs</a> on Android and <a href="https://developer.apple.com/reference/safariservices/sfsafariviewcontroller?language=objc">SFSafariViewController</a> on iOS to achieve SSO Auth redirection to the application.
 </h4>
 
-<p align="center">
-    <a href="https://www.npmjs.com/package/nativescript-advanced-webview">
-        <img src="https://img.shields.io/npm/v/nativescript-advanced-webview.svg" alt="npm">
-    </a>
-    <a href="https://www.npmjs.com/package/nativescript-advanced-webview">
-        <img src="https://img.shields.io/npm/dt/nativescript-advanced-webview.svg?label=npm%20downloads" alt="npm">
-    </a>
-    <a href="https://github.com/bradmartin/nativescript-advanced-webview/stargazers">
-        <img src="https://img.shields.io/github/stars/bradmartin/nativescript-advanced-webview.svg" alt="stars">
-    </a>
-     <a href="https://github.com/bradmartin/nativescript-advanced-webview/network">
-        <img src="https://img.shields.io/github/forks/bradmartin/nativescript-advanced-webview.svg" alt="forks">
-    </a>
-    <a href="https://github.com/bradmartin/nativescript-advanced-webview/blob/master/LICENSE.md">
-        <img src="https://img.shields.io/github/license/bradmartin/nativescript-advanced-webview.svg" alt="license">
-    </a>
-</p>
 
 [Here is a video](https://youtu.be/LVseK_CZp5g) showing off Chrome CustomTabs in NativeScript.
 
@@ -63,7 +46,7 @@ init();
 ```
 
 ```typescript
-import { openAdvancedUrl, SSOAuthOptions } from 'nativescript-ssoauth';
+import { SSOAuthOpenUrl, SSOAuthOptions } from 'nativescript-ssoauth';
 //// or
 import * as AdvancedWebView from 'nativescript-ssoauth';
 
@@ -83,7 +66,7 @@ public whateverYouLike() {
         }
     };
 
-    openAdvancedUrl(opts);
+    SSOAuthOpenUrl(opts);
 }
 ```
 
@@ -116,12 +99,12 @@ exports.openChromTabs = function(args){
     };
    console.log(args.view.bindingContext.url);
 
-   AdvancedWebView.openAdvancedUrl(opts);
+   AdvancedWebView.SSOAuthOpenUrl(opts);
 ```
 
 ### API
 
-- openAdvancedUrl(options: SSOAuthOptions)
+- SSOAuthOpenUrl(options: SSOAuthOptions)
 
 ##### SSOAuthOptions Properties
 

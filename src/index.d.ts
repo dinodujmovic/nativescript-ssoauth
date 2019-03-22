@@ -3,7 +3,7 @@
  * If the browser is not installed on the device, it should fall back to a webview.
  * @param {SSOAuthOptions}
  */
-export function openAdvancedUrl(options: SSOAuthOptions): void;
+export function SSOAuthOpenUrl(options: SSOAuthOptions): void;
 
 export function init(): void;
 
