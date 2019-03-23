@@ -45,3 +45,5 @@ export interface SSOAuthOptions {
 	 */
 	successCompletionHandler?: Function;
 }
+
+export function SSOAuthOpenUrlPostNotification(url: NSURL): void;

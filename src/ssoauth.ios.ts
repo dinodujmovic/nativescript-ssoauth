@@ -1,12 +1,7 @@
-/**********************************************************************************
- * (c) 2016, Brad Martin.
- * Licensed under the MIT license.
- *
- * Version 2.0.4                                           bradwaynemartin@gmail.com
- **********************************************************************************/
-
 import { Color } from 'tns-core-modules/color';
 import * as utils from 'tns-core-modules/utils/utils';
+
+const kCloseSafariViewControllerNotification = 'kCloseSafariViewControllerNotification';
 
 class SFSafariViewControllerDelegateImpl extends NSObject implements SFSafariViewControllerDelegate {
 	public static ObjCProtocols = [SFSafariViewControllerDelegate];
@@ -35,8 +30,9 @@ class AuthSFSafariViewController extends SFSafariViewController {
 	private static _successCompletionHandler: Function;
 
 	public static initWithOptions(options): any {
-		// tslint:disable-line
-		const SFViewController: any = super.alloc().initWithURL(NSURL.URLWithString(options.url)); // tslint:disable-line
+		const SFViewController: SFSafariViewController = AuthSFSafariViewController.alloc().initWithURL(
+			NSURL.URLWithString(options.url)
+		);
 		AuthSFSafariViewController._options = options;
 		AuthSFSafariViewController._onClose = options.onClose ? options.onClose : null;
 		AuthSFSafariViewController._successCompletionHandler = options.successCompletionHandler
@@ -76,12 +72,7 @@ class AuthSFSafariViewController extends SFSafariViewController {
 		) {
 			AuthSFSafariViewController._observer = utils.ios
 				.getter(NSNotificationCenter, NSNotificationCenter.defaultCenter)
-				.addObserverForNameObjectQueueUsingBlock(
-					'kCloseSafariViewControllerNotification',
-					null,
-					null,
-					this.loginSafari
-				);
+				.addObserverForNameObjectQueueUsingBlock(kCloseSafariViewControllerNotification, null, null, this.loginSafari);
 		}
 	}
 
@@ -126,6 +117,12 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 	const animated = true;
 	const completionHandler = null;
 	app.keyWindow.rootViewController.presentViewControllerAnimatedCompletion(sfc, animated, completionHandler);
+}
+
+export function SSOAuthOpenUrlPostNotification(url: NSURL) {
+	utils.ios
+		.getter(NSNotificationCenter, NSNotificationCenter.defaultCenter)
+		.postNotificationNameObject(kCloseSafariViewControllerNotification, url.absoluteString);
 }
 
 export interface SSOAuthOptions {

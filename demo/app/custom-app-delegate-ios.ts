@@ -1,5 +1,5 @@
 import { ReplaySubject } from 'rxjs';
-import * as utils from 'tns-core-modules/utils/utils';
+import { SSOAuthOpenUrlPostNotification } from 'nativescript-ssoauth';
 
 export const iOSOnRouteToURL: ReplaySubject<any> = new ReplaySubject<any>();
 
@@ -11,8 +11,7 @@ export class CustomAppDelegate extends UIResponder implements UIApplicationDeleg
 		url: NSURL
 	): boolean {
 		// Will catch redirection to CFBundleURLName
-		utils.ios.getter(NSNotificationCenter, NSNotificationCenter.defaultCenter)
-			.postNotificationNameObject('kCloseSafariViewControllerNotification', url.absoluteString);
+		SSOAuthOpenUrlPostNotification(url);
 
 		this.handleRouting(url);
 		return true;
