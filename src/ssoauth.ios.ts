@@ -27,15 +27,17 @@ class SFSafariViewControllerDelegateImpl extends NSObject implements SFSafariVie
 class AuthSFSafariViewController extends SFSafariViewController {
 	private static _observer: any; // tslint:disable-line
 	private static _options: SSOAuthOptions;
-	private static _onClose: Function;
+	private static _isClosedManually: boolean;
+	private static _onManualClose: Function;
 	private static _successCompletionHandler: Function;
 
 	public static initWithOptions(options): any {
 		const SFViewController: SFSafariViewController = AuthSFSafariViewController.alloc().initWithURL(
 			NSURL.URLWithString(options.url)
 		);
+		AuthSFSafariViewController._isClosedManually = true;
 		AuthSFSafariViewController._options = options;
-		AuthSFSafariViewController._onClose = options.onClose ? options.onClose : null;
+		AuthSFSafariViewController._onManualClose = options.onManualClose ? options.onManualClose : null;
 		AuthSFSafariViewController._successCompletionHandler = options.successCompletionHandler
 			? options.successCompletionHandler
 			: null;
@@ -44,8 +46,8 @@ class AuthSFSafariViewController extends SFSafariViewController {
 
 	public loginSafari(notification: NSNotification): void {
 		const url: string = notification.object;
-
 		AuthSFSafariViewController._successCompletionHandler(url);
+		AuthSFSafariViewController._isClosedManually = false;
 		const sharedApp = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
 		sharedApp.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
 		utils.ios
@@ -79,8 +81,12 @@ class AuthSFSafariViewController extends SFSafariViewController {
 		super.viewDidDisappear(true);
 		console.log(`View did disappear !`);
 
-		if (AuthSFSafariViewController._onClose && typeof AuthSFSafariViewController._onClose === 'function') {
-			AuthSFSafariViewController._onClose(true);
+		if (
+			AuthSFSafariViewController._onManualClose &&
+			typeof AuthSFSafariViewController._onManualClose === 'function' &&
+			AuthSFSafariViewController._isClosedManually
+		) {
+			AuthSFSafariViewController._onManualClose(true);
 		}
 
 		// Remove observer
@@ -130,7 +136,7 @@ export interface SSOAuthOptions {
 	toolbarColor?: string;
 	toolbarControlsColor?: string;
 	isLogout?: boolean;
-	onClose?: Function;
+	onManualClose?: Function;
 	successCompletionHandler?: Function;
 }
 

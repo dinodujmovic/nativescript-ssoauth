@@ -23,8 +23,8 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 		const resultCode = args.resultCode;
 		if (requestCode === REQUEST_CODE) {
 			if (resultCode === android.app.Activity.RESULT_CANCELED) {
-				if (options.onClose && typeof options.onClose === 'function') {
-					options.onClose(true);
+				if (options.onManualClose && typeof options.onManualClose === 'function') {
+					options.onManualClose(true);
 				}
 				app.android.off(app.AndroidApplication.activityResultEvent);
 			}
@@ -39,8 +39,8 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 		onNavigationEvent: function(navigationEvent: number, extras: android.os.Bundle) {
 			switch (navigationEvent) {
 				case 6:
-					if (options.onClose && typeof options.onClose === 'function') {
-						options.onClose(true);
+					if (options.onManualClose && typeof options.onManualClose === 'function') {
+						options.onManualClose(true);
 					}
 					break;
 			}
@@ -69,7 +69,7 @@ export interface SSOAuthOptions {
 	toolbarColor?: string;
 	toolbarControlsColor?: string;
 	isLogout?: boolean;
-	onClose?: Function;
+	onManualClose?: Function;
 	successCompletionHandler?: Function;
 }
 

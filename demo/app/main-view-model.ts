@@ -23,8 +23,8 @@ export class HelloWorldModel extends Observable {
 				showTitle: true,
 				toolbarColor: '#336699',
 				toolbarControlsColor: '#333',
-				onClose: closed => {
-					console.log(`On close: ${closed}`);
+				onManualClose: closed => {
+					console.log(`Manually closed ! ${closed}`);
 				},
 				successCompletionHandler: url => {
 					console.log(`=========================`);
