@@ -5,6 +5,9 @@
 Using <a href="https://developer.chrome.com/multidevice/android/customtabs#whatarethey">Chrome Custom Tabs</a> on Android and <a href="https://developer.apple.com/reference/safariservices/sfsafariviewcontroller?language=objc">SFSafariViewController</a> on iOS to achieve SSO Auth redirection to the application.
 </h4>
 
+* This project is a fork of [Advanced WebView Project](https://www.npmjs.com/package/nativescript-advanced-webview)
+
+----------
 
 [Here is a video](https://youtu.be/LVseK_CZp5g) showing off Chrome CustomTabs in NativeScript.
 
@@ -57,8 +60,7 @@ public whateverYouLike() {
         toolbarColor: '#ff4081',
         toolbarControlsColor: '#333', // iOS only
         showTitle: false, // Android only
-        callbackURLScheme: 'com.demoapp://',
-        onClose: closed => {
+        onManualClose: closed => {
             console.log(`Manually closed: ${closed}`);
         },
         successCompletionHandler: url => {
@@ -72,12 +74,12 @@ public whateverYouLike() {
 
 #### Javascript
 
-var AdvancedWebView = require("nativescript-advanced-webview");
+var SSOAuth = require("nativescript-ssoauth");
 
 Initiate the service before the app starts e.g app.ts, main.ts
 
 ```javascript
-AdvancedWebView.init();
+SSOAuth.init();
 ```
 
 ```javascript
@@ -89,22 +91,54 @@ exports.openChromTabs = function(args){
             toolbarColor: '#ff4081',
             toolbarControlsColor: '#333', // iOS only
             showTitle: false, // Android only
-            callbackURLScheme: 'com.demoapp://',
-            onClose: closed => {
-                    console.log(`Manually closed: ${closed}`);
-                },
-                successCompletionHandler: url => {
-                    console.log(`Successful URL return: ${url}`);
-                }
+            onManualClose: closed => {
+                console.log(`Manually closed: ${closed}`);
+            },
+            successCompletionHandler: url => {
+                console.log(`Successful URL return: ${url}`);
+            }
     };
    console.log(args.view.bindingContext.url);
 
-   AdvancedWebView.SSOAuthOpenUrl(opts);
+   SSOAuth.SSOAuthOpenUrl(opts);
+```
+
+#### Important! 
+##### Listen for URL change by using CustomAppDelegate and call SSOAuthOpenUrlPostNotification
+
+##### iOS
+```typescript
+import { SSOAuthOpenUrlPostNotification } from 'nativescript-ssoauth';
+
+export class CustomAppDelegate extends UIResponder implements UIApplicationDelegate {
+	public static ObjCProtocols: { prototype: UIApplicationDelegate }[] = [UIApplicationDelegate]; // tslint:disable-line:variable-name
+
+	public applicationOpenURLOptions(
+		app: UIApplication,
+		url: NSURL,
+		options: any
+	): boolean {
+		const lastArgument = arguments[arguments.length - 1];
+		const previousResult = lastArgument !== options ? lastArgument : undefined;
+
+		if (!previousResult) {
+			SSOAuthOpenUrlPostNotification(url);
+		}
+
+		return true;
+	}
+}
+```
+
+##### Android
+```typescript
 ```
 
 ### API
 
 - SSOAuthOpenUrl(options: SSOAuthOptions)
+- SSOAuthExtractAppUrl(url: string) // allows you to easily access returned params
+- SSOAuthOpenUrlPostNotification(url: string)
 
 ##### SSOAuthOptions Properties
 
@@ -112,14 +146,13 @@ exports.openChromTabs = function(args){
 - toolbarColor: string
 - toolbarControlsColor: string - ** iOS only **
 - showTitle: boolean - ** Android only **
-- callbackURLScheme: string
 - isLogout: boolean
-- onClose: Function
+- onManualClose: Function
 - successCompletionHandler: Function
 
 ##### Demo App
 
 - fork the repo
-- cd into `web` directory (recommend: use [http-server](https://www.npmjs.com/package/http-server) to server web files on port 8080)
+- cd into `web` directory (recommend: use [http-server](https://www.npmjs.com/package/http-server) to serve files on port 8080)
 - cd into the `src` directory
 - execute `npm run demo.android` or `npm run demo.ios` (these cmds are in the package.json `scripts` section of the src if you're curious what is executing)
