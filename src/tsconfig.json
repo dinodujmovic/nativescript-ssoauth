@@ -19,5 +19,5 @@
 		}
 	},
 	"exclude": ["node_modules"],
-	"include": ["index.d.ts", "references.d.ts", "ssoauth.android.ts", "ssoauth.ios.ts"]
+	"include": ["index.d.ts", "references.d.ts", "ssoauth.common.ts","ssoauth.android.ts", "ssoauth.ios.ts"]
 }

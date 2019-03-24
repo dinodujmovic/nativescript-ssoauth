@@ -1,7 +1,7 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import { Page } from 'tns-core-modules/ui/page';
 import { isIOS } from 'tns-core-modules/platform';
-import { SSOAuthOpenUrl, SSOAuthOptions } from 'nativescript-ssoauth';
+import { SSOAuthOpenUrl, SSOAuthOptions, SSOAuthExtractAppUrl } from 'nativescript-ssoauth';
 
 export class HelloWorldModel extends Observable {
 	public openUrlButtonText: string;
@@ -23,12 +23,19 @@ export class HelloWorldModel extends Observable {
 				showTitle: true,
 				toolbarColor: '#336699',
 				toolbarControlsColor: '#333',
-				callbackURLScheme: 'com.demoapp://',
 				onClose: closed => {
 					console.log(`On close: ${closed}`);
 				},
 				successCompletionHandler: url => {
-					console.log(`Successful URL return: ${url}`);
+					console.log(`=========================`);
+					console.log(`Full URL:`);
+					console.log(SSOAuthExtractAppUrl(url));
+					console.log(`---- Path: ----`);
+					console.log(SSOAuthExtractAppUrl(url).path);
+					console.log(`---- Params: ----`);
+					console.log(`Param1: ${SSOAuthExtractAppUrl(url).params.get('param1')}`);
+					console.log(`Param2: ${SSOAuthExtractAppUrl(url).params.get('param2')}`);
+					console.log(`=========================`)
 				}
 			};
 

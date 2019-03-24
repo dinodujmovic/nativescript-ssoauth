@@ -7,6 +7,13 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void;
 
 export function init(): void;
 
+export interface AppURL extends Object {
+	path: string;
+	params: Map<string, string>;
+}
+
+export function SSOAuthExtractAppUrl(url: string): AppURL;
+
 export interface SSOAuthOptions {
 	/**
 	 * The url of the site to open.
@@ -27,10 +34,6 @@ export interface SSOAuthOptions {
 	 * The color of the toolbar controls. *** iOS ONLY ***
 	 */
 	toolbarControlsColor?: string;
-	/**
-	 * Specified redirection URL
-	 */
-	callbackURLScheme: string;
 	/**
 	 * Is logout URL
 	 */

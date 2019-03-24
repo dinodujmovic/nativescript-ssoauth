@@ -8,6 +8,7 @@
 import { Color } from 'tns-core-modules/color';
 import * as app from 'tns-core-modules/application';
 import * as utils from 'tns-core-modules/utils/utils';
+import { AppURL, extractAppURL } from './ssoauth.common';
 const REQUEST_CODE = 1868;
 export function init() {
 	co.fitcom.fancywebview.AdvancedWebView.init(utils.ad.getApplicationContext(), true);
@@ -67,8 +68,11 @@ export interface SSOAuthOptions {
 	showTitle?: boolean;
 	toolbarColor?: string;
 	toolbarControlsColor?: string;
-	callbackURLScheme: string;
 	isLogout?: boolean;
 	onClose?: Function;
 	successCompletionHandler?: Function;
+}
+
+export function SSOAuthExtractAppUrl(url: string): AppURL {
+	return extractAppURL(url);
 }

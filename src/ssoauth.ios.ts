@@ -1,5 +1,6 @@
 import { Color } from 'tns-core-modules/color';
 import * as utils from 'tns-core-modules/utils/utils';
+import { AppURL, extractAppURL } from './ssoauth.common';
 
 const kCloseSafariViewControllerNotification = 'kCloseSafariViewControllerNotification';
 
@@ -44,15 +45,13 @@ class AuthSFSafariViewController extends SFSafariViewController {
 	public loginSafari(notification: NSNotification): void {
 		const url: string = notification.object;
 
-		if (url.startsWith(AuthSFSafariViewController._options.callbackURLScheme)) {
-			AuthSFSafariViewController._successCompletionHandler(url);
-			const sharedApp = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
-			sharedApp.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
-			utils.ios
-				.getter(NSNotificationCenter, NSNotificationCenter.defaultCenter)
-				.removeObserver(AuthSFSafariViewController._observer);
-			utils.GC();
-		}
+		AuthSFSafariViewController._successCompletionHandler(url);
+		const sharedApp = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
+		sharedApp.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
+		utils.ios
+			.getter(NSNotificationCenter, NSNotificationCenter.defaultCenter)
+			.removeObserver(AuthSFSafariViewController._observer);
+		utils.GC();
 	}
 
 	// Override
@@ -130,8 +129,11 @@ export interface SSOAuthOptions {
 	showTitle?: boolean;
 	toolbarColor?: string;
 	toolbarControlsColor?: string;
-	callbackURLScheme: string;
 	isLogout?: boolean;
 	onClose?: Function;
 	successCompletionHandler?: Function;
+}
+
+export function SSOAuthExtractAppUrl(url: string): AppURL {
+	return extractAppURL(url);
 }

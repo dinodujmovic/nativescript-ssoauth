@@ -8,10 +8,15 @@ export class CustomAppDelegate extends UIResponder implements UIApplicationDeleg
 
 	public applicationOpenURLOptions(
 		app: UIApplication,
-		url: NSURL
+		url: NSURL,
+		options: any
 	): boolean {
-		// Will catch redirection to CFBundleURLName
-		SSOAuthOpenUrlPostNotification(url);
+		const lastArgument = arguments[arguments.length - 1];
+		const previousResult = lastArgument !== options ? lastArgument : undefined;
+
+		if (!previousResult) {
+			SSOAuthOpenUrlPostNotification(url);
+		}
 
 		this.handleRouting(url);
 		return true;
