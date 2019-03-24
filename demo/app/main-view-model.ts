@@ -1,5 +1,6 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import { Page } from 'tns-core-modules/ui/page';
+import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { isIOS } from 'tns-core-modules/platform';
 import { SSOAuthOpenUrl, SSOAuthOptions, SSOAuthExtractAppUrl } from 'nativescript-ssoauth';
 
@@ -35,7 +36,13 @@ export class HelloWorldModel extends Observable {
 					console.log(`---- Params: ----`);
 					console.log(`Param1: ${SSOAuthExtractAppUrl(url).params.get('param1')}`);
 					console.log(`Param2: ${SSOAuthExtractAppUrl(url).params.get('param2')}`);
-					console.log(`=========================`)
+					console.log(`=========================`);
+
+					dialogs.alert({
+						title: `Redirection URL`,
+						message: url,
+						okButtonText: 'OK'
+					})
 				}
 			};
 

@@ -26,6 +26,7 @@ class SFSafariViewControllerDelegateImpl extends NSObject implements SFSafariVie
 
 class AuthSFSafariViewController extends SFSafariViewController {
 	private static _observer: any; // tslint:disable-line
+	private static _successUrl: string;
 	private static _options: SSOAuthOptions;
 	private static _isClosedManually: boolean;
 	private static _onManualClose: Function;
@@ -45,8 +46,7 @@ class AuthSFSafariViewController extends SFSafariViewController {
 	}
 
 	public loginSafari(notification: NSNotification): void {
-		const url: string = notification.object;
-		AuthSFSafariViewController._successCompletionHandler(url);
+		AuthSFSafariViewController._successUrl = notification.object;
 		AuthSFSafariViewController._isClosedManually = false;
 		const sharedApp = utils.ios.getter(UIApplication, UIApplication.sharedApplication);
 		sharedApp.keyWindow.rootViewController.dismissViewControllerAnimatedCompletion(true, null);
@@ -87,6 +87,8 @@ class AuthSFSafariViewController extends SFSafariViewController {
 			AuthSFSafariViewController._isClosedManually
 		) {
 			AuthSFSafariViewController._onManualClose(true);
+		} else {
+			AuthSFSafariViewController._successCompletionHandler(AuthSFSafariViewController._successUrl);
 		}
 
 		// Remove observer
