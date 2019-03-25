@@ -72,41 +72,12 @@ public whateverYouLike() {
 }
 ```
 
-#### Javascript
-
-var SSOAuth = require("nativescript-ssoauth");
-
-Initiate the service before the app starts e.g app.ts, main.ts
-
-```javascript
-SSOAuth.init();
-```
-
-```javascript
-exports.openChromTabs = function(args){
-    //var gotoUrl = args.view.bindingContext.url;
-
-    var opts = {
-            url: args.view.bindingContext.url,
-            toolbarColor: '#ff4081',
-            toolbarControlsColor: '#333', // iOS only
-            showTitle: false, // Android only
-            onManualClose: closed => {
-                console.log(`Manually closed: ${closed}`);
-            },
-            successCompletionHandler: url => {
-                console.log(`Successful URL return: ${url}`);
-            }
-    };
-   console.log(args.view.bindingContext.url);
-
-   SSOAuth.SSOAuthOpenUrl(opts);
-```
-
 #### Important! 
 ##### Listen for URL change by using CustomAppDelegate and call SSOAuthOpenUrlPostNotification
 
 ##### iOS
+
+// custom-app-delegate-ios.ts
 ```typescript
 import { SSOAuthOpenUrlPostNotification } from 'nativescript-ssoauth';
 
@@ -130,15 +101,36 @@ export class CustomAppDelegate extends UIResponder implements UIApplicationDeleg
 }
 ```
 
-##### Android
+// app.ts
 ```typescript
+import { ios } from 'tns-core-modules/application';
+import { isIOS } from 'tns-core-modules/platform';
+
+if (isIOS) {
+	const { CustomAppDelegate } = require('./custom-app-delegate-ios'); // tslint:disable-line
+	ios.delegate = CustomAppDelegate;
+}
+```
+
+##### Android
+To listen for application redirection in Android - specify your schema name (example: `<data android:scheme="com.demoapp" />`)
+together with other action and category.
+```xml
+<activity android:name="com.ActivityName">
+<intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="com.demoapp" />
+</intent-filter>
+</activity>
 ```
 
 ### API
 
-- SSOAuthOpenUrl(options: SSOAuthOptions)
-- SSOAuthExtractAppUrl(url: string) // allows you to easily access returned params
-- SSOAuthOpenUrlPostNotification(url: string)
+- SSOAuthOpenUrl(options: SSOAuthOptions) // open URL
+- SSOAuthExtractAppUrl(url: string) // extract returned URL and it's parameters
+- SSOAuthOpenUrlPostNotification(url: string) // iOS only - post notification inside of ios.delegate
 
 ##### SSOAuthOptions Properties
 

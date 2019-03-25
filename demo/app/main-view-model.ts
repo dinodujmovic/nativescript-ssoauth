@@ -1,10 +1,15 @@
+import * as app from 'tns-core-modules/application';
+import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { Observable } from 'tns-core-modules/data/observable';
 import { Page } from 'tns-core-modules/ui/page';
-import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { isIOS } from 'tns-core-modules/platform';
+
 import { SSOAuthOpenUrl, SSOAuthOptions, SSOAuthExtractAppUrl } from 'nativescript-ssoauth';
 
+declare var android: any;
+
 export class HelloWorldModel extends Observable {
+	private _url: string;
 	public openUrlButtonText: string;
 
 	constructor(page: Page) {
@@ -12,15 +17,17 @@ export class HelloWorldModel extends Observable {
 
 		if (isIOS) {
 			this.openUrlButtonText = 'Open Safari View Controller';
+			this._url = 'http://127.0.0.1:8080/';
 		} else {
 			this.openUrlButtonText = 'Open Chrome Custom Tabs';
+			this._url = 'http://10.0.2.2:8080/';
 		}
 	}
 
 	public onTap() {
 		try {
 			let opt: SSOAuthOptions = {
-				url: 'http://127.0.0.1:8080/',
+				url: this._url,
 				showTitle: true,
 				toolbarColor: '#336699',
 				toolbarControlsColor: '#333',
