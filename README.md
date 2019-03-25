@@ -27,7 +27,7 @@ Using <a href="https://developer.chrome.com/multidevice/android/customtabs#whata
 
 | Android                                   | iOS                                             |
 | ----------------------------------------- | ----------------------------------------------- |
-| ![Android Sample](screens/chromeTabs.gif) | ![iOS Sample](screens/safariViewController.gif) |
+| ![Android Sample](screens/_chromeTabs.gif) | ![iOS Sample](screens/_safariViewController.gif) |
 
 ## Installation
 
