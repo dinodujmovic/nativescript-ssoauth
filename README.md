@@ -31,10 +31,10 @@ Using <a href="https://developer.chrome.com/multidevice/android/customtabs#whata
 
 ## Installation
 
-To install execute
+To install execute (Coming soon...)
 
 ```
-tns plugin add nativescript-advanced-webview
+tns plugin add nativescript-ssoauth
 ```
 
 ## Example
@@ -50,8 +50,6 @@ init();
 
 ```typescript
 import { SSOAuthOpenUrl, SSOAuthOptions } from 'nativescript-ssoauth';
-//// or
-import * as AdvancedWebView from 'nativescript-ssoauth';
 
 public whateverYouLike() {
 
