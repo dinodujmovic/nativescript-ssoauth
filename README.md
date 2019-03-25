@@ -1,4 +1,4 @@
-<a align="center" href="https://www.npmjs.com/package/nativescript-advanced-webview">
+<a align="center" href="https://www.npmjs.com/package/nativescript-ssoauth">
     <h3 align="center">SSOAuth</h3>
 </a>
 <h4 align="center">

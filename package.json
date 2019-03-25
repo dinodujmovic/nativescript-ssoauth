@@ -1,0 +1,18 @@
+{
+  "name": "nativescript-ssoauth",
+  "version": "1.0.0",
+  "description": "Using Chrome Custom Tabs on Android and SFSafariViewController on iOS to achieve SSO Auth redirection to the application.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinodujmovic/nativescript-ssoauth.git"
+  },
+  "author": "Dino Dujmovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dinodujmovic/nativescript-ssoauth/issues"
+  },
+  "homepage": "https://github.com/dinodujmovic/nativescript-ssoauth#readme"
+}
