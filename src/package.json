@@ -1,6 +1,6 @@
 {
 	"name": "nativescript-ssoauth",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "An advanced webview using Chrome CustomTabs on Android and SFSafariViewController on iOS.",
 	"main": "ssoauth",
 	"typings": "index.d.ts",
@@ -31,7 +31,7 @@
 		"email": "dino7dujmovic@gmail.com"
 	},
 	"license": "MIT",
-	"homepage": "https://github.com/dinodujmovic/ssoauth",
+	"homepage": "https://github.com/dinodujmovic/nativescript-ssoauth",
 	"readmeFilename": "README.md",
 	"scripts": {
 		"debug.ios": "npm run preparedemo && cd ../demo && tns debug ios --emulator",
