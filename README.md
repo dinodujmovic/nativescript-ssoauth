@@ -192,7 +192,7 @@ How to use:
 - SSOAuthOpenUrl(options: SSOAuthOptions) // open URL
 - SSOAuthExtractAppUrl(url: string) // extract returned URL and it's parameters
 - SSOAuthOpenUrlPostNotification(url: string) // iOS only - broadcast redirection URL to SSOAuth
-- SSOAuthOpenUrlBroadcastRedirectionURL(intent: ) // Android only - broadcast intent to SSOAuth
+- SSOAuthOpenUrlBroadcastRedirectionURL(intent: android.content.Intent) // Android only - broadcast intent to SSOAuth
 
 ##### SSOAuthOptions Properties
 
