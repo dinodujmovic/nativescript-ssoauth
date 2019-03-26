@@ -87,7 +87,11 @@ class AuthSFSafariViewController extends SFSafariViewController {
 			AuthSFSafariViewController._isClosedManually
 		) {
 			AuthSFSafariViewController._onManualClose(true);
-		} else {
+		} else if (
+			AuthSFSafariViewController._successCompletionHandler &&
+			AuthSFSafariViewController._successCompletionHandler === 'function' &&
+			!AuthSFSafariViewController._isClosedManually
+		) {
 			AuthSFSafariViewController._successCompletionHandler(AuthSFSafariViewController._successUrl);
 		}
 
