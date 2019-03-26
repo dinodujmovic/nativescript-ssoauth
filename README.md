@@ -54,7 +54,7 @@ import { SSOAuthOpenUrl, SSOAuthOptions } from 'nativescript-ssoauth';
 public whateverYouLike() {
 
     let opts: SSOAuthOptions = {
-        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        url: 'https://login.de?redirectionUri=com.demoapp://',
         toolbarColor: '#ff4081',
         toolbarControlsColor: '#333', // iOS only
         showTitle: false, // Android only
@@ -70,65 +70,129 @@ public whateverYouLike() {
 }
 ```
 
-#### Important! 
-##### Listen for URL change by using CustomAppDelegate and call SSOAuthOpenUrlPostNotification
+How to use:
+---------------
 
-##### iOS
+### iOS
 
-// custom-app-delegate-ios.ts
-```typescript
-import { SSOAuthOpenUrlPostNotification } from 'nativescript-ssoauth';
+1. Add your application CFBundleURLSchemes name.
+    ###### Info.plist
+    ```
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.demoapp</string>
+        </array>
+        <key>CFBundleURLName</key>
+        <string>com.demoapp</string>
+        <key>CFBundleTypeRole</key>
+        <string>Viewer</string>
+      </dict>
+    </array>
+    ```
+2. Create CustomAppDelegate class. Override applicationOpenURLOptions method to catch redirectionUrl and call SSOAuthOpenUrlPostNotification(redirectionUrl);
 
-export class CustomAppDelegate extends UIResponder implements UIApplicationDelegate {
-	public static ObjCProtocols: { prototype: UIApplicationDelegate }[] = [UIApplicationDelegate]; // tslint:disable-line:variable-name
+    ###### custom-app-delegate-ios.ts
+    ```typescript
+    import { SSOAuthOpenUrlPostNotification } from 'nativescript-ssoauth';
+    
+    export class CustomAppDelegate extends UIResponder implements UIApplicationDelegate {
+        public static ObjCProtocols: { prototype: UIApplicationDelegate }[] = [UIApplicationDelegate]; // tslint:disable-line:variable-name
+    
+        public applicationOpenURLOptions(
+            app: UIApplication,
+            url: NSURL,
+            options: any
+        ): boolean {
+            const lastArgument = arguments[arguments.length - 1];
+            const previousResult = lastArgument !== options ? lastArgument : undefined;
+    
+            if (!previousResult) {
+                SSOAuthOpenUrlPostNotification(url);
+            }
+    
+            return true;
+        }
+    }
+    ```
 
-	public applicationOpenURLOptions(
-		app: UIApplication,
-		url: NSURL,
-		options: any
-	): boolean {
-		const lastArgument = arguments[arguments.length - 1];
-		const previousResult = lastArgument !== options ? lastArgument : undefined;
+    ###### app.ts
+    ```typescript
+    import { ios } from 'tns-core-modules/application';
+    import { isIOS } from 'tns-core-modules/platform';
+    
+    if (isIOS) {
+        const { CustomAppDelegate } = require('./custom-app-delegate-ios'); // tslint:disable-line
+        ios.delegate = CustomAppDelegate;
+    }
+    ```
 
-		if (!previousResult) {
-			SSOAuthOpenUrlPostNotification(url);
-		}
+------------------------------------------------------------
 
-		return true;
-	}
-}
-```
+### Android
 
-// app.ts
-```typescript
-import { ios } from 'tns-core-modules/application';
-import { isIOS } from 'tns-core-modules/platform';
+1. To listen for application redirection in Android. Specify your schema name by adding intent-filter (shown in the example)
 
-if (isIOS) {
-	const { CustomAppDelegate } = require('./custom-app-delegate-ios'); // tslint:disable-line
-	ios.delegate = CustomAppDelegate;
-}
-```
+    ###### AndroidManifest.xml
 
-##### Android
-To listen for application redirection in Android - specify your schema name (example: `<data android:scheme="com.demoapp" />`)
-together with other action and category.
-```xml
-<activity android:name="com.ActivityName">
-<intent-filter>
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="com.demoapp" />
-</intent-filter>
-</activity>
-```
+    ```xml
+    <activity android:name="com.ActivityName">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="com.demoapp" />
+    </intent-filter>
+    </activity>
+    ```
+2. Extend Android activity (example: demo/app/activity-extend-android.ts) and onCreate pass intent by calling SSOAuthOpenUrlBroadcastRedirectionURL(this.intent);
+
+    ###### activity-extend-android.ts
+
+    ```
+    import {setActivityCallbacks, AndroidActivityCallbacks} from "tns-core-modules/ui/frame";
+    import { SSOAuthOpenUrlBroadcastRedirectionURL } from 'nativescript-ssoauth';
+
+    @JavaProxy("com.tns.NativeScriptActivity")
+    class Activity extends android.support.v7.app.AppCompatActivity {
+        public isNativeScriptActivity;
+
+	private _callbacks: AndroidActivityCallbacks;
+	
+    public onCreate(savedInstanceState: android.os.Bundle): void {
+        // Set the isNativeScriptActivity in onCreate (as done in the original NativeScript activity code)
+        // The JS constructor might not be called because the activity is created from Android.
+        this.isNativeScriptActivity = true;
+        if (!this._callbacks) {
+            setActivityCallbacks(this);
+        }
+
+        this._callbacks.onCreate(this, savedInstanceState, super.onCreate);
+
+        let intent: android.content.Intent = this.getIntent();
+        SSOAuthOpenUrlBroadcastRedirectionURL(intent);
+        }
+    }
+    ```
+    
+    ###### app.ts
+    ```typescript
+    import { isAndroid } from 'tns-core-modules/platform';
+    
+    if (isAndroid) {
+        require('./activity-extend-android')
+    }
+    ```
+---------------------
 
 ### API
 
 - SSOAuthOpenUrl(options: SSOAuthOptions) // open URL
 - SSOAuthExtractAppUrl(url: string) // extract returned URL and it's parameters
-- SSOAuthOpenUrlPostNotification(url: string) // iOS only - post notification inside of ios.delegate
+- SSOAuthOpenUrlPostNotification(url: string) // iOS only - broadcast redirection URL to SSOAuth
+- SSOAuthOpenUrlBroadcastRedirectionURL(intent: ) // Android only - broadcast intent to SSOAuth
 
 ##### SSOAuthOptions Properties
 

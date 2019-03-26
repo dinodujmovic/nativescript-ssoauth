@@ -31,7 +31,6 @@ export class HelloWorldModel extends Observable {
 				showTitle: true,
 				toolbarColor: '#336699',
 				toolbarControlsColor: '#333',
-				isLogout: true,
 				onManualClose: closed => {
 					console.log(`Manually closed ! ${closed}`);
 				},
