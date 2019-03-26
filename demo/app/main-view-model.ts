@@ -31,10 +31,14 @@ export class HelloWorldModel extends Observable {
 				showTitle: true,
 				toolbarColor: '#336699',
 				toolbarControlsColor: '#333',
+				isLogout: true,
 				onManualClose: closed => {
 					console.log(`Manually closed ! ${closed}`);
 				},
 				successCompletionHandler: url => {
+					if (!url) {
+						return;
+					}
 					console.log(`=========================`);
 					console.log(`Full URL:`);
 					console.log(SSOAuthExtractAppUrl(url));

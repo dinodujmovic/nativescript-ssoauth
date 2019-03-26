@@ -49,4 +49,12 @@ export interface SSOAuthOptions {
 	successCompletionHandler?: Function;
 }
 
+/**
+ * Pass redirection URL - from your AppDelegate. *** iOS ONLY ***
+ */
 export function SSOAuthOpenUrlPostNotification(url: NSURL): void;
+
+/**
+ * Pass redirection Intent (URL) - from your Activity extend class (onCreate). *** ANDROID ONLY ***
+ */
+export function SSOAuthOpenUrlBroadcastRedirectionURL(intent: android.content.Intent): void;

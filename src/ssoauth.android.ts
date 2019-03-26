@@ -32,32 +32,27 @@ function handleOpenURL(handler: UrlHandlerCallback): void {
 	URL_HANDLER_CALLBACK = handler;
 }
 
+// =====================
+// Exports
+// =====================
+
 export function init() {
 	co.fitcom.fancywebview.AdvancedWebView.init(utils.ad.getApplicationContext(), true);
 }
 
-app.android.on(app.AndroidApplication.activityCreatedEvent, args => {
-	let intent: android.content.Intent = args.activity.getIntent();
-	let data = intent.getData();
-	try {
-		let appURL = data;
-		if (
-			appURL != null &&
-			(new String(intent.getAction()).valueOf() === new String(android.content.Intent.ACTION_MAIN).valueOf() ||
-				new String(intent.getAction()).valueOf() === new String(android.content.Intent.ACTION_VIEW).valueOf())
-		) {
-			try {
-				getUrlHandleCallback()(appURL.toString());
-			} catch (ignored) {
-				app.android.on(app.AndroidApplication.activityResultEvent, () => {
-					getUrlHandleCallback()(appURL.toString());
-				});
-			}
-		}
-	} catch (e) {
-		console.error('Unknown error during getting App URL data', e);
-	}
-});
+export function SSOAuthExtractAppUrl(url: string): AppURL {
+	return extractAppURL(url);
+}
+
+export interface SSOAuthOptions {
+	url: string;
+	showTitle?: boolean;
+	toolbarColor?: string;
+	toolbarControlsColor?: string;
+	isLogout?: boolean;
+	onManualClose?: Function;
+	successCompletionHandler?: Function;
+}
 
 export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 	if (!options.url) {
@@ -86,6 +81,13 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 		onServiceDisconnected(componentName: android.content.ComponentName) {},
 		onNavigationEvent: function(navigationEvent: number, extras: android.os.Bundle) {
 			switch (navigationEvent) {
+				case NavigationEvent.TabShown:
+					if (options.isLogout) {
+						// Currently - I didn't find (or is not possible) a way to dynamically close CustomTabs
+						options.successCompletionHandler(null);
+					}
+					break;
+				// TabHidden - triggers when customTabs are fully closed (animation finished)
 				case NavigationEvent.TabHidden:
 					if (!isClosedManually) {
 						options.successCompletionHandler(redirectionUrl);
@@ -95,7 +97,6 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 					if (options.onManualClose && typeof options.onManualClose === 'function') {
 						options.onManualClose(true);
 					}
-
 					break;
 			}
 		}
@@ -116,27 +117,37 @@ export function SSOAuthOpenUrl(options: SSOAuthOptions): void {
 		intentBuilder.enableUrlBarHiding(); /// Enables the url bar to hide as the user scrolls down on the page.
 	}
 
-	handleOpenURL((url: string) => {
-		console.log(url);
-		if (options.successCompletionHandler && typeof options.successCompletionHandler === 'function' && url) {
-			isClosedManually = false;
-			redirectionUrl = url;
-		}
-	});
+	if (!options.isLogout) {
+		handleOpenURL((url: string) => {
+			if (options.successCompletionHandler && typeof options.successCompletionHandler === 'function' && url) {
+				isClosedManually = false;
+				redirectionUrl = url;
+			}
+		});
+	}
 
 	wv.loadUrl(options.url);
 }
 
-export interface SSOAuthOptions {
-	url: string;
-	showTitle?: boolean;
-	toolbarColor?: string;
-	toolbarControlsColor?: string;
-	isLogout?: boolean;
-	onManualClose?: Function;
-	successCompletionHandler?: Function;
-}
+export function SSOAuthOpenUrlBroadcastRedirectionURL(intent: android.content.Intent) {
+	let data = intent.getData();
 
-export function SSOAuthExtractAppUrl(url: string): AppURL {
-	return extractAppURL(url);
+	try {
+		let appURL = data;
+		if (
+			appURL != null &&
+			(new String(intent.getAction()).valueOf() === new String(android.content.Intent.ACTION_MAIN).valueOf() ||
+				new String(intent.getAction()).valueOf() === new String(android.content.Intent.ACTION_VIEW).valueOf())
+		) {
+			try {
+				getUrlHandleCallback()(appURL.toString());
+			} catch (ignored) {
+				app.android.on(app.AndroidApplication.activityResultEvent, () => {
+					getUrlHandleCallback()(appURL.toString());
+				});
+			}
+		}
+	} catch (e) {
+		console.error('Unknown error during getting App URL data', e);
+	}
 }
