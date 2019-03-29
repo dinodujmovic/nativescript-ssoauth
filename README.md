@@ -27,11 +27,11 @@ Using <a href="https://developer.chrome.com/multidevice/android/customtabs#whata
 
 | Android                                   | iOS                                             |
 | ----------------------------------------- | ----------------------------------------------- |
-| ![Android Sample](screens/_chromeTabs.gif) | ![iOS Sample](screens/_safariViewController.gif) |
+| ![Android Sample](screens/AndroidCustomTabs.gif) | ![iOS Sample](screens/iOSSFSafariViewController.gif) |
 
 ## Installation
 
-To install execute (Coming soon...)
+To install execute
 
 ```
 tns plugin add nativescript-ssoauth
